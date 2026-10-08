@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pknstan_library
+      POSTGRES_USER: library_user
+      POSTGRES_PASSWORD: library_pass
+      TZ: Asia/Jakarta
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U library_user -d pknstan_library"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://library_user:library_pass@db:5432/pknstan_library
+      DATABASE_SSL: "false"
+      JWT_SECRET: local-docker-secret-change-this-value-1234567890
+      NODE_ENV: development
+      DEMO_MODE: "true"
+      AUTO_MIGRATE: "true"
+      AUTO_SEED_DEMO: "true"
+      CRON_SECRET: local-cron-secret-change-this-value
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

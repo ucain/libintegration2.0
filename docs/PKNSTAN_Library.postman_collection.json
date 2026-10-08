@@ -1,0 +1,51 @@
+{
+  "info": {
+    "name": "PKN STAN Library System v2",
+    "description": "Collection untuk validasi API. Built-in authentication menggunakan HttpOnly cookie; Postman akan menyimpan cookie pknstan_session secara otomatis setelah Mock Login.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key":"baseUrl","value":"http://localhost:3000/api/v1"}
+  ],
+  "item": [
+    {
+      "name":"Diagnostics",
+      "item":[
+        {"name":"System Status","request":{"method":"GET","url":{"raw":"{{baseUrl}}/system/status","host":["{{baseUrl}}"],"path":["system","status"]}}}
+      ]
+    },
+    {
+      "name":"Auth",
+      "item":[
+        {
+          "name":"Mock Login - Student",
+          "request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"institutionalId\": \"230012345\"\n}"},"url":{"raw":"{{baseUrl}}/auth/mock-login","host":["{{baseUrl}}"],"path":["auth","mock-login"]}}
+        },
+        {
+          "name":"Me (uses cookie from login)",
+          "request":{"method":"GET","url":{"raw":"{{baseUrl}}/auth/me","host":["{{baseUrl}}"],"path":["auth","me"]}}
+        },
+        {
+          "name":"Logout",
+          "request":{"method":"POST","url":{"raw":"{{baseUrl}}/auth/logout","host":["{{baseUrl}}"],"path":["auth","logout"]}}
+        }
+      ]
+    },
+    {
+      "name":"Catalog",
+      "item":[
+        {"name":"List Books","request":{"method":"GET","url":{"raw":"{{baseUrl}}/books","host":["{{baseUrl}}"],"path":["books"]}}},
+        {"name":"Book Detail","request":{"method":"GET","url":{"raw":"{{baseUrl}}/books/40000000-0000-0000-0000-000000000001","host":["{{baseUrl}}"],"path":["books","40000000-0000-0000-0000-000000000001"]}}}
+      ]
+    },
+    {
+      "name":"Reservation",
+      "item":[
+        {
+          "name":"Book Available Copy",
+          "request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"copyId\": \"41000000-0000-0000-0000-000000000001\"\n}"},"url":{"raw":"{{baseUrl}}/reservations","host":["{{baseUrl}}"],"path":["reservations"]}}
+        }
+      ]
+    }
+  ]
+}
